@@ -1,5 +1,29 @@
 {
+  "name": "sanctum-bot",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/HaiqalHarona/Sanctum-Bot#readme",
+  "bugs": {
+    "url": "https://github.com/HaiqalHarona/Sanctum-Bot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HaiqalHarona/Sanctum-Bot.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "eslint.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
   "dependencies": {
-    "discord.js": "^14.25.1"
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0"
   }
 }
