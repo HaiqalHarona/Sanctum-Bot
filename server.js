@@ -1,1 +1,2 @@
-console.log(process.env.TOKEN)
+require('dotenv').config();
+console.log(process.env.TOKEN);
