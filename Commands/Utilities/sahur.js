@@ -1,0 +1,37 @@
+const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js');
+require('dotenv').config();
+const path = require('path');
+
+module.exports = {
+    data: new SlashCommandBuilder().setName('sahur').setDescription('initialise sahur'),
+    async execute(interaction) {
+        const sahurGif = new AttachmentBuilder(path.join(`${__dirname}/../../assets/sahur.gif`));
+        // Fetch Channel to send announcement in
+        const channel = await interaction.guild.channels.fetch(process.env.CHANNEL_ID); // Announcement Channel
+        const Announcement = new EmbedBuilder()
+            .setColor('C20000')
+            .setTitle('BANGUN SAHUR!')
+            .setAuthor({
+                name: 'Islamic Board of Sanctum',
+                iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg'
+            })
+            .setDescription(
+                'Time for sahur grab your food and eat up!'
+            )
+            .setThumbnail(
+                'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg'
+            )
+            .setImage(
+                'attachment://sahur.gif'
+            )
+            .setTimestamp()
+            .setFooter({ text: '@2026 Islamic Board of Sanctum', iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg' });
+
+        try {
+            channel.send({ embeds: [Announcement], files: [sahurGif] }); // Send the embed to channel || Set attachment for setImage params
+            await interaction.reply({ content: 'Sahur Initialisation Successful', ephemeral: true }); // Get rid of 'application did not respond' message || Confirmation message
+        } catch (e) {
+            await interaction.reply({ content: 'Sahur Initialisation Failed', ephemeral: true });
+        }
+    }
+};

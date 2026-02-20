@@ -41,10 +41,10 @@ module.exports = {
 			}
 		});
 
-		// Get total number of reactions after 3 hours ended
-		collector.on('end', collected => {
-			console.log(`Collected ${collected.size} reaction items`);
-		})
+		// // Get total number of reactions after 3 hours ended
+		// collector.on('end', collected => {
+		// 	console.log(`Collected ${collected.size} reaction items`);
+		// })
 
 	},
 };
