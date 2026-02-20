@@ -29,8 +29,8 @@ module.exports = {
 		const collector = reply.createReactionCollector({ filter, time: 10800000 }); // Collect reactions for 3 hours (10800000 milliseconds)
 
 		collector.on('collect', async (reaction, user) => {
-			console.log(`Reaction collected from: ${user.username} (${user.id})`);
-			console.log(`Emoji: ${reaction.emoji.name} | ID: ${reaction.emoji.id}`);
+			// console.log(`Reaction collected from: ${user.username} (${user.id})`);
+			// console.log(`Emoji: ${reaction.emoji.name} | ID: ${reaction.emoji.id}`);
 			try {
 				await user.send({
 					content : `Assalamu Alaikum **${user.username}!** You've been registered for Tarawih on **${tdy}** 🕌`,
