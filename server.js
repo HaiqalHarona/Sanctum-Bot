@@ -1,9 +1,11 @@
 // Require the necessary discord.js classes
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, MessageFlags, Partials } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, MessageFlags, Partials, AttachmentBuilder, EmbedBuilder} = require('discord.js');
 require('dotenv').config();
 const token = process.env.TOKEN;
+const cron = require('node-cron');
+const sahurInit = require('./Commands/Utilities/sahur.js');
 
 // Create a new client instance
 const client = new Client({
@@ -26,6 +28,32 @@ const client = new Client({
 // It makes some properties non-nullable.
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+	cron.schedule('0 5 * * *', async () => {
+		try {
+			const channel = await readyClient.channels.fetch(process.env.CHANNEL_ID);
+			const sahurGif = new AttachmentBuilder(path.join(__dirname, './assets/sahur.gif'));
+
+			const Announcement = new EmbedBuilder()
+				.setColor('C20000')
+				.setTitle('BANGUN SAHUR!')
+				.setAuthor({
+					name: 'Islamic Board of Sanctum',
+					iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg'
+				})
+				.setDescription('Time for sahur grab your food and eat up!')
+				.setThumbnail('https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg')
+				.setImage('attachment://sahur.gif')
+				.setTimestamp()
+				.setFooter({ text: '@2026 Islamic Board of Sanctum', iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg' });
+
+			await channel.send({ content: `<@&${process.env.ROLE_ID}>`, embeds: [Announcement], files: [sahurGif] });
+			console.log('Sahur announcement sent!');
+		} catch (e) {
+			console.error('Failed to send sahur announcement:', e);
+		}
+	}, {
+		timezone: 'Asia/Kuala_Lumpur'
+	});
 });
 
 client.commands = new Collection();

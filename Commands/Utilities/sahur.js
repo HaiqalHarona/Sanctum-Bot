@@ -10,7 +10,7 @@ module.exports = {
         const channel = await interaction.guild.channels.fetch(process.env.CHANNEL_ID); // Announcement Channel
         const Announcement = new EmbedBuilder()
             .setColor('C20000')
-            .setTitle('BANGUN SAHUR!')
+            .setTitle(`BANGUN SAHUR!`)
             .setAuthor({
                 name: 'Islamic Board of Sanctum',
                 iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg'
@@ -28,7 +28,7 @@ module.exports = {
             .setFooter({ text: '@2026 Islamic Board of Sanctum', iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg' });
 
         try {
-            channel.send({ embeds: [Announcement], files: [sahurGif] }); // Send the embed to channel || Set attachment for setImage params
+            channel.send({ content: `<@&${process.env.ROLE_ID}>`, embeds: [Announcement], files: [sahurGif] }); // Send the embed to channel || Set attachment for setImage params
             await interaction.reply({ content: 'Sahur Initialisation Successful', ephemeral: true }); // Get rid of 'application did not respond' message || Confirmation message
         } catch (e) {
             await interaction.reply({ content: 'Sahur Initialisation Failed', ephemeral: true });
