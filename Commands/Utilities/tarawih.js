@@ -1,8 +1,12 @@
-const { SlashCommandBuilder, AttachmentBuilder, StringSelectMenuBuilder, ActionRowBuilder, StringSelectMenuOptionBuilder, ComponentType } = require('discord.js');
-const path = require('path');
+import { SlashCommandBuilder, AttachmentBuilder, StringSelectMenuBuilder, ActionRowBuilder, StringSelectMenuOptionBuilder, ComponentType } from 'discord.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import db from '../../database_ctrl.js';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
 	data: new SlashCommandBuilder().setName('tarawih').setDescription('Initialise Tarawih'),
 	async execute(interaction) {
 		// interaction.user is the object representing the User who ran the command
@@ -69,32 +73,31 @@ module.exports = {
 					const selected = i.values[0]; // Get selected value
 					const userId = i.user.id;
 					const username = i.user.username;
-
-					let userRegisteration = db.data.user.find(u => u.id === userId);
-					// Register user if not already in database
-					if (!userRegisteration) {
-						db.data.user.push({
+					db.data.user = db.data.user || [];
+					db.data.tarawih = db.data.tarawih || [];
+					let userRegistration = db.data.user.find(u => u.id === userId); // Register user if not already in database
+					if (!userRegistration) {
+						const newUser = {
 							id: userId,
 							name: username,
 							attendence: 0
-						});
-						await db.write();
-
+						};
+						db.data.user.push(newUser);
+						userRegistration = newUser;
 					}
 
 					if (selected === 'present') {
-						await i.update({ content: `✅ You have been marked as **Present** for Tarawih tonight on **${tdy}** 🕌`, components: [] });
 						// Update user's presence in database
-						db.data.user.find(u => u.id === userId).attendence += 1;
+						userRegistration.attendence += 1;
 						db.data.tarawih.push({
 							id: userId,
 							name: username,
 							date: tdy,
 							status: 'present'
 						});
-						await db.write();
+						await i.update({ content: `✅ You have been marked as **Present** for Tarawih tonight on **${tdy}** 🕌`, components: [] });
+
 					} else if (selected === 'absent') {
-						await i.update({ content: `❌ You have been marked as **Absent** for Tarawih tonight on **${tdy}**`, components: [] });
 						// Update user's absence in database
 						db.data.tarawih.push({
 							id: userId,
@@ -102,8 +105,10 @@ module.exports = {
 							date: tdy,
 							status: 'absent'
 						});
-						await db.write();
+						await i.update({ content: `❌ You have been marked as **Absent** for Tarawih tonight on **${tdy}**`, components: [] });
+
 					}
+					await db.write();
 				});
 			} catch (e) {
 				await interaction.followUp({ content: `<@${user.id}> enable DMs to participate in Tarawih` }); // If user has DMs disabled, send a follow-up message in the channel

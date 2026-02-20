@@ -1,10 +1,10 @@
-import { JSONFilePreset } from 'lowdb/node'
-
+import { JSONFilePreset } from 'lowdb/node';
 const ramadanStorage = {
-    user: [],
-    tarawih: [],
+    user : [],
+    tarawih : [],
 };
 
 const db = await JSONFilePreset('db.json', ramadanStorage);
+
 
 export default db;

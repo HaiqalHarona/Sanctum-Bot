@@ -1,11 +1,16 @@
 // Require the necessary discord.js classes
-const fs = require('node:fs');
-const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, MessageFlags, Partials, AttachmentBuilder, EmbedBuilder} = require('discord.js');
-require('dotenv').config();
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { Client, Collection, Events, GatewayIntentBits, MessageFlags, Partials, AttachmentBuilder, EmbedBuilder } from 'discord.js';
+import 'dotenv/config'; // Modern dotenv load
+import cron from 'node-cron';
+
+// Reconstructing __dirname for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const token = process.env.TOKEN;
-const cron = require('node-cron');
-const sahurInit = require('./Commands/Utilities/sahur.js');
 
 // Create a new client instance
 const client = new Client({
@@ -67,7 +72,7 @@ for (const folder of commandFolders) {
 	console.log(commandsPath);
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
+		const command = (await import(pathToFileURL(filePath).href)).default;
 		// Set a new item in the Collection with the key as the command name and the value as the exported module
 		if ('data' in command && 'execute' in command) {
 			client.commands.set(command.data.name, command);

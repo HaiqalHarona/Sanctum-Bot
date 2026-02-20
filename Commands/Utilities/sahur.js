@@ -1,8 +1,12 @@
-const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js');
-require('dotenv').config();
-const path = require('path');
+import { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } from 'discord.js';
+import 'dotenv/config'; // Modern way to import and run dotenv
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
     data: new SlashCommandBuilder().setName('sahur').setDescription('initialise sahur'),
     async execute(interaction) {
         const sahurGif = new AttachmentBuilder(path.join(`${__dirname}/../../assets/sahur.gif`));
