@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, AttachmentBuilder, StringSelectMenuBuilder, ActionRowBuilder, StringSelectMenuOptionBuilder, ComponentType } = require('discord.js');
 const path = require('path');
+import db from '../../database_ctrl.js';
 
 module.exports = {
 	data: new SlashCommandBuilder().setName('tarawih').setDescription('Initialise Tarawih'),
@@ -66,10 +67,42 @@ module.exports = {
 				const dmCollector = dm.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time: 1800000 }); // Collect for 30 minutes
 				dmCollector.on('collect', async (i) => {
 					const selected = i.values[0]; // Get selected value
+					const userId = i.user.id;
+					const username = i.user.username;
+
+					let userRegisteration = db.data.user.find(u => u.id === userId);
+					// Register user if not already in database
+					if (!userRegisteration) {
+						db.data.user.push({
+							id: userId,
+							name: username,
+							attendence: 0
+						});
+						await db.write();
+
+					}
+
 					if (selected === 'present') {
 						await i.update({ content: `✅ You have been marked as **Present** for Tarawih tonight on **${tdy}** 🕌`, components: [] });
+						// Update user's presence in database
+						db.data.user.find(u => u.id === userId).attendence += 1;
+						db.data.tarawih.push({
+							id: userId,
+							name: username,
+							date: tdy,
+							status: 'present'
+						});
+						await db.write();
 					} else if (selected === 'absent') {
 						await i.update({ content: `❌ You have been marked as **Absent** for Tarawih tonight on **${tdy}**`, components: [] });
+						// Update user's absence in database
+						db.data.tarawih.push({
+							id: userId,
+							name: username,
+							date: tdy,
+							status: 'absent'
+						});
+						await db.write();
 					}
 				});
 			} catch (e) {
