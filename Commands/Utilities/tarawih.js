@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, AttachmentBuilder, StringSelectMenuBuilder, ActionRowBuilder, StringSelectMenuOptionBuilder, ComponentType } from 'discord.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import db from '../../database_ctrl.js';
+import tarawih_db from '../../Controllers/tarawih_db_controller.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,6 +73,7 @@ export default {
 					const selected = i.values[0]; // Get selected value
 					const userId = i.user.id;
 					const username = i.user.username;
+					const db = tarawih_db
 					db.data.user = db.data.user || [];
 					db.data.tarawih = db.data.tarawih || [];
 					let userRegistration = db.data.user.find(u => u.id === userId); // Register user if not already in database

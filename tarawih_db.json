@@ -1,0 +1,17 @@
+{
+  "user": [
+    {
+      "id": "475941146930053140",
+      "name": "resslon",
+      "attendence": 1
+    }
+  ],
+  "tarawih": [
+    {
+      "id": "475941146930053140",
+      "name": "resslon",
+      "date": "23/02/2026",
+      "status": "present"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import db from '../../database_ctrl.js';
+import tarawih_db from '../../Controllers/tarawih_db_controller.js';
 
 // This Whole Command was made by Antigravity (Testing it)
 
@@ -9,10 +9,10 @@ export default {
 		.setDescription('📊 View fun Tarawih attendance stats for the group!'),
 
 	async execute(interaction) {
-		await db.read();
+		await tarawih_db.read();
 
-		const tarawihData = db.data.tarawih || [];
-		const userData = db.data.user || [];
+		const tarawihData = tarawih_db.data.tarawih || [];
+		const userData = tarawih_db.data.user || [];
 
 		// ── Basic counts ────────────────────────────────────────────────
 		const totalRecords = tarawihData.length;

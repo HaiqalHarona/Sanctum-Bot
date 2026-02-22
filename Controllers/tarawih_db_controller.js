@@ -4,7 +4,6 @@ const ramadanStorage = {
     tarawih : [],
 };
 
-const db = await JSONFilePreset('db.json', ramadanStorage);
+const tarawih_db = await JSONFilePreset('tarawih_db.json', ramadanStorage);
 
-
-export default db;
+export default tarawih_db;
