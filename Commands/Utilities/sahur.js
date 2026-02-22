@@ -31,11 +31,21 @@ export default {
             .setTimestamp()
             .setFooter({ text: '@2026 Islamic Board of Sanctum', iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg' });
 
+        let sentEmbed;
         try {
-            channel.send({ content: `<@&${process.env.ROLE_ID}>`, embeds: [Announcement], files: [sahurGif] }); // Send the embed to channel || Set attachment for setImage params
+            sentEmbed = await channel.send({ content: `<@&${process.env.ROLE_ID}>`, embeds: [Announcement], files: [sahurGif] }); // Send the embed to channel || Set attachment for setImage params
+            setTimeout(async () => {
+                try {
+                    await sentEmbed.delete();
+                    console.log('Deleted sahur embed');
+                } catch (e) {
+                    console.error('Failed to delete sahur embed:', e);
+                }
+            }, 3600000 ); // Delete after 1 hour (3600000 milliseconds)
             await interaction.reply({ content: 'Sahur Initialisation Successful', ephemeral: true }); // Get rid of 'application did not respond' message || Confirmation message
         } catch (e) {
             await interaction.reply({ content: 'Sahur Initialisation Failed', ephemeral: true });
         }
+
     }
-};
+}

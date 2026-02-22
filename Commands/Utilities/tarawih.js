@@ -13,15 +13,24 @@ export default {
 		// interaction.member is the GuildMember object, which represents the user in the specific guild
 		const replyGif = new AttachmentBuilder(path.join(__dirname, '../../assets/TarawihTime.gif'));
 		const dmGif = new AttachmentBuilder(path.join(__dirname, '../../assets/miyabi.gif'));
+		let tarawihReply;
 
-		await interaction.reply(
+		tarawihReply = await interaction.reply(
 			{
 				files: [replyGif],
-				content: 'Time to Tarawih! React to the message to initiate participation',
+				content: `Time to Tarawih! React to the message to initiate participation <@&${process.env.ROLE_ID}> Update your attendance status in the database by following the instructions in the DM that will be sent to you! 🕌`,
 				withResponse: true,
 
 			}
 		);
+		setTimeout(async () => {
+			try {
+				await tarawihReply.delete();
+				console.log('Deleted tarawih command reply');
+			} catch (e) {
+				console.error('Failed to delete tarawih command reply:', e);
+			}
+		}, 10000); // Delete the command reply after 5 minutes to keep channel clean
 		// Format Date
 		const tdy = new Date().toLocaleDateString('en-GB');
 
