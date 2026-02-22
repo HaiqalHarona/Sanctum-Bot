@@ -35,6 +35,7 @@ client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 	cron.schedule('0 5 * * *', async () => {
 		try {
+			let scheduleEmbed;
 			const channel = await readyClient.channels.fetch(process.env.CHANNEL_ID);
 			const sahurGif = new AttachmentBuilder(path.join(__dirname, './assets/sahur.gif'));
 
@@ -51,7 +52,15 @@ client.once(Events.ClientReady, (readyClient) => {
 				.setTimestamp()
 				.setFooter({ text: '@2026 Islamic Board of Sanctum', iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg' });
 
-			await channel.send({ content: `<@&${process.env.ROLE_ID}>`, embeds: [Announcement], files: [sahurGif] });
+			scheduleEmbed = await channel.send({ content: `<@&${process.env.ROLE_ID}>`, embeds: [Announcement], files: [sahurGif] });
+			setTimeout(async () => {
+				try {
+					await scheduleEmbed.delete();
+					console.log('Deleted sahur embed');
+				} catch (e) {
+					console.error('Failed to delete sahur embed:', e);
+				}
+			}, 10000); // Delete after 1 hour (3600000 milliseconds)
 			console.log('Sahur announcement sent!');
 		} catch (e) {
 			console.error('Failed to send sahur announcement:', e);
