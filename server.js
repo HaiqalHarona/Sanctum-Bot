@@ -60,7 +60,7 @@ client.once(Events.ClientReady, (readyClient) => {
 				} catch (e) {
 					console.error('Failed to delete sahur embed:', e);
 				}
-			}, 10000); // Delete after 1 hour (3600000 milliseconds)
+			}, 3600000); // Delete after 1 hour (3600000 milliseconds)
 			console.log('Sahur announcement sent!');
 		} catch (e) {
 			console.error('Failed to send sahur announcement:', e);

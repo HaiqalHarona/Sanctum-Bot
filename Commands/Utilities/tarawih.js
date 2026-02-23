@@ -30,7 +30,7 @@ export default {
 			} catch (e) {
 				console.error('Failed to delete tarawih command reply:', e);
 			}
-		}, 10000); // Delete the command reply after 5 minutes to keep channel clean
+		}, 10800000); // Delete the command reply after 3 hours to keep channel clean
 		// Format Date
 		const tdy = new Date().toLocaleDateString('en-GB');
 
