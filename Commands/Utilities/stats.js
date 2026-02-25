@@ -126,7 +126,7 @@ export default {
 
 			)
 			.setFooter({ text: 'Islamic Board of Sanctum • Ramadan 2026', iconURL: 'https://i.pinimg.com/736x/28/03/50/28035028b267f359e68e1597b6a50c0d.jpg' })
-			.setTimestamp();
+			// .setTimestamp();
 
 		await interaction.reply({ embeds: [embed] });
 	},
